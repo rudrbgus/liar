@@ -18,27 +18,24 @@ public class PracticeController {
         return  "들어왔다";
     }
 
-    @GetMapping("/create-room")
-    public String makeRoom(){
-        System.out.println("방 만들기");
-        Room room = new Room();
-        return "만듬";
-    }
-
-    @PostMapping("/sendData")
-    public String storeTemporaryIdentifier(@RequestBody Map<String, String> requestData) {
+    @PostMapping("/create-room")
+    public String makeRoom(@RequestBody Map<String, String> requestData){
+        // 식별자와 방 코드르 입력 받음
         String temporaryIdentifier = requestData.get("temporaryIdentifier");
         String generateRandomRoomCode = requestData.get("randomRoomCode");
         // 임시 식별자를 저장하거나 필요한 로직을 수행합니다.
-        System.out.println("Received temporary identifier: " + temporaryIdentifier);
-        System.out.println(generateRandomRoomCode);
-        Room room = new Room();
-        room.addUserToRoom("");
+        System.out.println("받은 식별자: " + temporaryIdentifier);
+        System.out.println("받은 방 코드: "+generateRandomRoomCode);
+
 
         userRandomName randomName = userRandomName.getRandomKoreanName();
-        System.out.println(randomName.name());
-        return randomName.name();
+        System.out.println("사용자에게 준 이름: "+randomName.name());
 
-        // 여기에서 응답을 보내지 않습니다.
+        // 방 객체 만들고 방에 이름 넣기
+        Room room = new Room(generateRandomRoomCode);
+        room.addUserToRoom(randomName.name());
+
+        return randomName.name();
     }
+
 }

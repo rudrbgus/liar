@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
-@NoArgsConstructor
 public class Room {
     // 방 제목
     private String roomId;
@@ -17,9 +16,21 @@ public class Room {
     private List<String> users;
 
     // 유저 이름을 받아서 리스트에 추가하는 메서드
-    public void addUserToRoom(String userName) {
-        users.add(userName);
+    public void addUserToRoom(String  user) {
+        if (users != null) {
+            users.add(user);
+        } else {
+            System.out.println("Error: Users list is null.");
+        }
     }
 
+    // Room 클래스 생성시 users리스트 초기화
+    public Room() {
+        this.users = new ArrayList<>();
+    }
 
+    public Room(String roomId) {
+        this.roomId = roomId;
+        this.users = new ArrayList<>();
+    }
 }

@@ -7,6 +7,8 @@ public enum userRandomName {
 
     private static final Random RANDOM = new Random();
 
+
+
     public static userRandomName getRandomKoreanName() {
         userRandomName[] values = userRandomName.values();
         return values[RANDOM.nextInt(values.length)];
