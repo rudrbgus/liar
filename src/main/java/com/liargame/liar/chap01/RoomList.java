@@ -9,12 +9,13 @@ import java.util.List;
 
 @Getter @Setter
 public class RoomList {
-    private List<Room> roomList = new ArrayList<>();
+    public static List<Room> roomList;
 
-    public RoomList(Room room) {
-        roomList.add(room);
+    static{
+        roomList = new ArrayList<>();
     }
-    public void addRoomList(Room room){
+
+    public static void addRoomList(Room room){
         roomList.add(room);
     }
 }

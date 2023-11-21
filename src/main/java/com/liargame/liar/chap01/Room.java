@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 @Getter
 @Setter
 public class Room {
@@ -27,10 +29,25 @@ public class Room {
     // Room 클래스 생성시 users리스트 초기화
     public Room() {
         this.users = new ArrayList<>();
+        this.roomId = generateRandomRoomId();
     }
 
     public Room(String roomId) {
         this.roomId = roomId;
         this.users = new ArrayList<>();
+    }
+
+    // 4글자의 임의의 방 이름 생성 메서드
+    private String generateRandomRoomId() {
+        StringBuilder roomIdBuilder = new StringBuilder();
+        Random random = new Random();
+
+        // 4글자의 랜덤한 알파벳 대문자 생성
+        for (int i = 0; i < 4; i++) {
+            char randomChar = (char) ('A' + random.nextInt(26));
+            roomIdBuilder.append(randomChar);
+        }
+
+        return roomIdBuilder.toString();
     }
 }
