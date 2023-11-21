@@ -9,7 +9,12 @@ import java.util.List;
 
 @Getter @Setter
 public class RoomList {
-    private List<Room> users;
+    private List<Room> roomList = new ArrayList<>();
 
-
+    public RoomList(Room room) {
+        roomList.add(room);
+    }
+    public void addRoomList(Room room){
+        roomList.add(room);
+    }
 }

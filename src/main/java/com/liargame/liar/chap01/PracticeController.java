@@ -35,14 +35,16 @@ public class PracticeController {
         Room room = new Room(generateRandomRoomCode);
         User user = new User(randomName.name(), temporaryIdentifier);
         room.addUserToRoom(user);
-
+        RoomList roomList = new RoomList(room);
+        System.out.println("방 만듬");
         return randomName.name();
     }
+
     @GetMapping("/find-room-code")
     public String compareRoomCode(@RequestBody Map<String, String> requestData){
+        System.out.println("방 코드 입력함");
         String inputRoomCode = requestData.get("inputRoomCode"); // 방 코드
         String temporaryIdentifier = requestData.get("temporaryIdentifier"); // 식별자
-
 
         return "s";
     }
