@@ -13,10 +13,10 @@ public class Room {
     private String roomId;
 
     // 사용자 리스트
-    private List<String> users;
+    private List<User> users;
 
     // 유저 이름을 받아서 리스트에 추가하는 메서드
-    public void addUserToRoom(String  user) {
+    public void addUserToRoom(User  user) {
         if (users != null) {
             users.add(user);
         } else {

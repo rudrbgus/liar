@@ -20,7 +20,7 @@ public class PracticeController {
 
     @PostMapping("/create-room")
     public String makeRoom(@RequestBody Map<String, String> requestData){
-        // 식별자와 방 코드르 입력 받음
+        // 식별자와 방 코드를 입력 받음
         String temporaryIdentifier = requestData.get("temporaryIdentifier");
         String generateRandomRoomCode = requestData.get("randomRoomCode");
         // 임시 식별자를 저장하거나 필요한 로직을 수행합니다.
@@ -33,9 +33,18 @@ public class PracticeController {
 
         // 방 객체 만들고 방에 이름 넣기
         Room room = new Room(generateRandomRoomCode);
-        room.addUserToRoom(randomName.name());
+        User user = new User(randomName.name(), temporaryIdentifier);
+        room.addUserToRoom(user);
 
         return randomName.name();
+    }
+    @GetMapping("/find-room-code")
+    public String compareRoomCode(@RequestBody Map<String, String> requestData){
+        String inputRoomCode = requestData.get("inputRoomCode"); // 방 코드
+        String temporaryIdentifier = requestData.get("temporaryIdentifier"); // 식별자
+
+
+        return "s";
     }
 
 }
