@@ -1,6 +1,7 @@
 package com.liargame.liar.chap01;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,25 +30,18 @@ public class PracticeController {
     }
 
     @PostMapping("/create-room")
-    public void makeRoom(HttpServletResponse  response){
+    public String makeRoom(){
         // 방 객체 만들고 방에 이름 넣기
         Room room = new Room(); // 새로운 방 만들기
         User user = new User(); // 새로운 유저 만들기
         room.addUserToRoom(user); // 방에 유저 넣기
         addRoomList(room); // 새로운 방 리스트 만들기
 
-
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // 클라이언트 도메인으로 설정
-        response.setHeader("Access-Control-Allow-Credentials", "true"); // 쿠키 전송을 허용하기 위한 설정
-        Cookie userCookie = new Cookie("userId", "123");
-        userCookie.setMaxAge(3600);
-        userCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
-        response.addCookie(userCookie);
-
-
         System.out.println("방장 이름: " + roomList.get(0).getUsers().get(0).getName());
         System.out.println("방 코드: " + roomList.get(0).getRoomId());
         System.out.println("방 만듬");
+        System.out.println("사용자에게 쿠키로 준 이름: "+ user.getName());
+        return user.getName();
     }
 
     @PostMapping("/compare-room-code")
@@ -61,11 +55,9 @@ public class PracticeController {
             roomList.get(0).addUserToRoom(user); // 새로운 접속 유저 넣기
 
             // 사용자에게 전달할 쿠키 생성
-            Cookie userCookie = new Cookie("userId", user.getTemporaryIdentifier());
-            userCookie.setMaxAge(3600); // 쿠키 유효 시간 (초 단위), 여기서는 1시간으로 설정
-            response.addCookie(userCookie);
-            response.setStatus(HttpServletResponse.SC_OK);
-
+            Cookie cookie = new Cookie("userId", user.getTemporaryIdentifier());
+            response.setHeader("Set-Cookie", cookie.toString());
+            response.addCookie(cookie);
         }else{
             System.out.println("일치하는 방이 없습니다.");
 
