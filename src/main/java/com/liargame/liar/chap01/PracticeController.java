@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +32,7 @@ public class PracticeController {
     }
 
     @PostMapping("/create-room")
-    public String makeRoom(){
+    public String makeRoom(){ // 방 만드는 메서드
         // 방 객체 만들고 방에 이름 넣기
         Room room = new Room(); // 새로운 방 만들기
         User user = new User(); // 새로운 유저 만들기
@@ -45,7 +47,7 @@ public class PracticeController {
     }
 
     @PostMapping("/compare-room-code")
-    public void compareRoomCode(@RequestBody Map<String, String> requestData, HttpServletResponse response){
+    public String  compareRoomCode(@RequestBody Map<String, String> requestData){
         System.out.println("방 코드 입력함: " + requestData.get("inputRoomCode"));
         String inputRoomCode = requestData.get("inputRoomCode"); // 방 코드를 받음
         if(inputRoomCode.equals(roomList.get(0).getRoomId())){ // 방 코드가 일치하면
@@ -53,14 +55,10 @@ public class PracticeController {
             User user = new User(); // 새로운 접속 유저
             System.out.println("새로운 유저 이름: " + user.getName());
             roomList.get(0).addUserToRoom(user); // 새로운 접속 유저 넣기
-
-            // 사용자에게 전달할 쿠키 생성
-            Cookie cookie = new Cookie("userId", user.getTemporaryIdentifier());
-            response.setHeader("Set-Cookie", cookie.toString());
-            response.addCookie(cookie);
+            return user.getName();
         }else{
             System.out.println("일치하는 방이 없습니다.");
-
+            return "실패";
         }
     }
 
@@ -75,7 +73,29 @@ public class PracticeController {
         return userNameList;
     }
     @PostMapping("/user-leave")
-    public void userLeave(){
+    public void userLeave(@RequestBody Map<String, String> requestBody){
+        System.out.println("받은 쿠키 값: "+ requestBody.get("userId"));
+        System.out.println("해독한 값: "+ decodeUrl(requestBody.get("userId")));
+        String outUserName = decodeUrl(requestBody.get("userId"));
+        for (int i = 0; i < roomList.get(0).getUsers().size(); i++) {
+            if(outUserName.equals(roomList.get(0).getUsers().get(i).getName())){
+                roomList.get(0).getUsers().remove(i);
+                System.out.println("삭제함");
+            }
+
+        }
+
         System.out.println("유저가 나갔어 ㅠㅠ");
+    }
+
+    // 받아온 Uri 해독하는 메서드
+    private String decodeUrl(String encodedValue) {
+        try {
+            return URLDecoder.decode(encodedValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // 예외 처리 (UnsupportedEncodingException은 실제로 발생할 일이 거의 없습니다.)
+            e.printStackTrace();
+            return "";
+        }
     }
 }
