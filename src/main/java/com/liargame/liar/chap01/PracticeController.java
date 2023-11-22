@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.liargame.liar.chap01.RoomList.*;
+import static org.springframework.boot.web.server.Cookie.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000") // React 애플리케이션의 주소로 변경
@@ -26,19 +29,29 @@ public class PracticeController {
     }
 
     @PostMapping("/create-room")
-    public void makeRoom(){
+    public void makeRoom(HttpServletResponse  response){
         // 방 객체 만들고 방에 이름 넣기
         Room room = new Room(); // 새로운 방 만들기
         User user = new User(); // 새로운 유저 만들기
         room.addUserToRoom(user); // 방에 유저 넣기
         addRoomList(room); // 새로운 방 리스트 만들기
+
+
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // 클라이언트 도메인으로 설정
+        response.setHeader("Access-Control-Allow-Credentials", "true"); // 쿠키 전송을 허용하기 위한 설정
+        Cookie userCookie = new Cookie("userId", "123");
+        userCookie.setMaxAge(3600);
+        userCookie.setSecure(true); // HTTPS에서만 전송되도록 설정
+        response.addCookie(userCookie);
+
+
         System.out.println("방장 이름: " + roomList.get(0).getUsers().get(0).getName());
         System.out.println("방 코드: " + roomList.get(0).getRoomId());
         System.out.println("방 만듬");
     }
 
     @PostMapping("/compare-room-code")
-    public void compareRoomCode(@RequestBody Map<String, String> requestData){
+    public void compareRoomCode(@RequestBody Map<String, String> requestData, HttpServletResponse response){
         System.out.println("방 코드 입력함: " + requestData.get("inputRoomCode"));
         String inputRoomCode = requestData.get("inputRoomCode"); // 방 코드를 받음
         if(inputRoomCode.equals(roomList.get(0).getRoomId())){ // 방 코드가 일치하면
@@ -46,6 +59,12 @@ public class PracticeController {
             User user = new User(); // 새로운 접속 유저
             System.out.println("새로운 유저 이름: " + user.getName());
             roomList.get(0).addUserToRoom(user); // 새로운 접속 유저 넣기
+
+            // 사용자에게 전달할 쿠키 생성
+            Cookie userCookie = new Cookie("userId", user.getTemporaryIdentifier());
+            userCookie.setMaxAge(3600); // 쿠키 유효 시간 (초 단위), 여기서는 1시간으로 설정
+            response.addCookie(userCookie);
+            response.setStatus(HttpServletResponse.SC_OK);
 
         }else{
             System.out.println("일치하는 방이 없습니다.");
