@@ -82,9 +82,7 @@ public class PracticeController {
                 roomList.get(0).getUsers().remove(i);
                 System.out.println("삭제함");
             }
-
         }
-
         System.out.println("유저가 나갔어 ㅠㅠ");
     }
 
@@ -97,5 +95,25 @@ public class PracticeController {
             e.printStackTrace();
             return "";
         }
+    }
+
+    @PostMapping("/getRoomCode")
+    public String sendRoomCode(){
+        System.out.println("방 번호 줌: " + roomList.get(0).getRoomId());
+        return roomList.get(0).getRoomId();
+    }
+
+    @PostMapping("/addChat")
+    public void addChat(@RequestBody Map<String, String> requestBody){
+        String userId = decodeUrl(requestBody.get("userId"));
+        String userContext = requestBody.get("userContext");
+        System.out.println("입력 받은 채팅 내용: " +userId + userContext);
+        Chat chat = new Chat(userId, userContext);
+        ChatArray.chatList.add(chat);
+    }
+    
+    @PostMapping("getChatList")
+    public List<Chat> sendChatList(){
+        return ChatArray.chatList;
     }
 }
