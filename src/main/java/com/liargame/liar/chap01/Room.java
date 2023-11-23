@@ -1,15 +1,13 @@
 package com.liargame.liar.chap01;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Getter
-@Setter
+@Getter @Setter
+@ToString @EqualsAndHashCode
 public class Room {
     // 방 제목
     private String roomId;

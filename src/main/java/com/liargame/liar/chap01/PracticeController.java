@@ -25,12 +25,6 @@ import static org.springframework.boot.web.server.Cookie.*;
 @CrossOrigin(origins = "http://localhost:3000") // React 애플리케이션의 주소로 변경
 public class PracticeController {
 
-
-    @GetMapping("/hello")
-    public String getHello(){
-        return  "들어왔다";
-    }
-
     @PostMapping("/create-room")
     public String makeRoom(){ // 방 만드는 메서드
         // 방 객체 만들고 방에 이름 넣기
@@ -40,23 +34,33 @@ public class PracticeController {
         room.setSuperUserName(user.getName());
         addRoomList(room); // 새로운 방 리스트 만들기
 
+        System.out.println("--------------------방만들기--------------------------------");
 
-        System.out.println("방장 이름: " + roomList.get(0).getUsers().get(0).getName());
-        System.out.println("방 코드: " + roomList.get(0).getRoomId());
-        System.out.println("방 만듬");
+        System.out.println("방장 이름: " + roomList.get(roomList.size()-1).getUsers().get(0).getName());
+        System.out.println("방 코드: " + roomList.get(roomList.size()-1).getRoomId());
         System.out.println("사용자에게 쿠키로 준 이름: "+ user.getName());
+
+        System.out.println("----------------------------------------------------------");
         return user.getName();
     }
 
     @PostMapping("/compare-room-code")
     public String  compareRoomCode(@RequestBody Map<String, String> requestData){
-        System.out.println("방 코드 입력함: " + requestData.get("inputRoomCode"));
+        // 방 코드 찾는 로직
+        String roomCode = requestData.get("roomCode");
+        int roomNumber =0;
+        for (int i = 0; i < roomList.size(); i++) {
+            roomList.get(i).getRoomId().equals(roomCode);
+            roomNumber = i;
+        }
+
+        System.out.println("사용자가 방 코드 입력함: " + requestData.get("inputRoomCode"));
         String inputRoomCode = requestData.get("inputRoomCode"); // 방 코드를 받음
-        if(inputRoomCode.equals(roomList.get(0).getRoomId())){ // 방 코드가 일치하면
+        if(inputRoomCode.equals(roomList.get(roomNumber).getRoomId())){ // 방 코드가 일치하면
             System.out.println("방 코드 일치");
             User user = new User(); // 새로운 접속 유저
             System.out.println("새로운 유저 이름: " + user.getName());
-            roomList.get(0).addUserToRoom(user); // 새로운 접속 유저 넣기
+            roomList.get(roomNumber).addUserToRoom(user); // 새로운 접속 유저 넣기
             return user.getName();
         }else{
             System.out.println("일치하는 방이 없습니다.");
@@ -65,8 +69,14 @@ public class PracticeController {
     }
 
     @PostMapping("/get-user-list")
-    public List<String> sendUserList() {
-        List<User> users = roomList.get(0).getUsers();
+    public List<String> sendUserList(@RequestBody Map<String, String> requestData) {
+        String roomCode = requestData.get("roomCode");
+        int roomNumber =0;
+        for (int i = 0; i < roomList.size(); i++) {
+            roomList.get(i).getRoomId().equals(roomCode);
+            roomNumber = i;
+        }
+        List<User> users = roomList.get(roomNumber).getUsers();
         List<String> userNameList = new ArrayList<>();
         for (User user : users) {
             String name = user.getName();
@@ -76,16 +86,18 @@ public class PracticeController {
     }
     @PostMapping("/user-leave")
     public void userLeave(@RequestBody Map<String, String> requestBody){
-        System.out.println("받은 쿠키 값: "+ requestBody.get("userId"));
-        System.out.println("해독한 값: "+ decodeUrl(requestBody.get("userId")));
+        System.out.println("--------------------사용자가 나갔습니다----------------------------");
+        System.out.println("나간 사용자의 쿠키값: "+ requestBody.get("userId"));
+        System.out.println("나간 사용자의 쿠키값을 해독한 값: "+ decodeUrl(requestBody.get("userId")));
         String outUserName = decodeUrl(requestBody.get("userId"));
         for (int i = 0; i < roomList.get(0).getUsers().size(); i++) {
             if(outUserName.equals(roomList.get(0).getUsers().get(i).getName())){
                 roomList.get(0).getUsers().remove(i);
-                System.out.println("삭제함");
+                System.out.println("리스트에서 그 사용자를 삭제함");
+                System.out.println(roomList.get(0).getUsers().toString());
+                System.out.println("----------------------------------------------------------");
             }
         }
-        System.out.println("유저가 나갔어 ㅠㅠ");
     }
 
     // 받아온 Uri 해독하는 메서드
@@ -100,8 +112,14 @@ public class PracticeController {
     }
 
     @PostMapping("/getRoomCode")
-    public String sendRoomCode(){
-        return roomList.get(0).getRoomId();
+    public String sendRoomCode(@RequestBody Map<String, String> requestBody){
+        String userName = requestBody.get("userName");
+        int roomNumber =0;
+        for (int i = 0; i < roomList.size(); i++) {
+            roomList.get(i).getSuperUserName().equals(userName);
+            roomNumber = i;
+        }
+        return roomList.get(roomNumber).getRoomId();
     }
 
     @PostMapping("/addChat")
@@ -114,16 +132,30 @@ public class PracticeController {
     
     @PostMapping("/getChatList")
     public List<Chat> sendChatList(){
+        if(ChatArray.chatList.isEmpty()){
+            Chat chat = new Chat("없습니다", "없습니다");
+            ChatArray.chatList.add(chat);
+            return ChatArray.chatList;
+        }
         return ChatArray.chatList;
     }
 
-    @GetMapping("/getUserNumber")
-    public int sendUserNumber(){
-        if(roomList.get(0).getUsers().isEmpty())
+    @PostMapping("/getUserNumber")
+    public int sendUserNumber(@RequestBody Map<String, String> requestBody){
+        String roomCode = requestBody.get("roomCode");
+        System.out.println("입력받은 방 코드: "+ roomCode);
+        int roomNumber =0;
+        for (int i = 0; i < roomList.size(); i++) {
+            if(roomList.get(i).getRoomId().equals(roomCode))
+            {
+                roomNumber = i;
+            }
+        }
+        if(roomList.get(roomNumber).getUsers().isEmpty())
         {
             return 0;
         }else{
-            return roomList.get(0).getUsers().size();
+            return roomList.get(roomNumber).getUsers().size();
         }
     }
 
