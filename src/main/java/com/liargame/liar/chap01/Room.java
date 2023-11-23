@@ -17,6 +17,8 @@ public class Room {
     // 사용자 리스트
     private List<User> users;
 
+    private String superUserName;
+
     // 유저 이름을 받아서 리스트에 추가하는 메서드
     public void addUserToRoom(User  user) {
         if (users != null) {

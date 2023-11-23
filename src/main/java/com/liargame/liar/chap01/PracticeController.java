@@ -37,7 +37,9 @@ public class PracticeController {
         Room room = new Room(); // 새로운 방 만들기
         User user = new User(); // 새로운 유저 만들기
         room.addUserToRoom(user); // 방에 유저 넣기
+        room.setSuperUserName(user.getName());
         addRoomList(room); // 새로운 방 리스트 만들기
+
 
         System.out.println("방장 이름: " + roomList.get(0).getUsers().get(0).getName());
         System.out.println("방 코드: " + roomList.get(0).getRoomId());
@@ -99,7 +101,6 @@ public class PracticeController {
 
     @PostMapping("/getRoomCode")
     public String sendRoomCode(){
-        System.out.println("방 번호 줌: " + roomList.get(0).getRoomId());
         return roomList.get(0).getRoomId();
     }
 
@@ -107,13 +108,27 @@ public class PracticeController {
     public void addChat(@RequestBody Map<String, String> requestBody){
         String userId = decodeUrl(requestBody.get("userId"));
         String userContext = requestBody.get("userContext");
-        System.out.println("입력 받은 채팅 내용: " +userId + userContext);
         Chat chat = new Chat(userId, userContext);
         ChatArray.chatList.add(chat);
     }
     
-    @PostMapping("getChatList")
+    @PostMapping("/getChatList")
     public List<Chat> sendChatList(){
         return ChatArray.chatList;
+    }
+
+    @GetMapping("/getUserNumber")
+    public int sendUserNumber(){
+        if(roomList.get(0).getUsers().isEmpty())
+        {
+            return 0;
+        }else{
+            return roomList.get(0).getUsers().size();
+        }
+    }
+
+    @GetMapping("/getSuperUserID")
+    public String sendSuperUserID(){
+        return roomList.get(0).getSuperUserName();
     }
 }
