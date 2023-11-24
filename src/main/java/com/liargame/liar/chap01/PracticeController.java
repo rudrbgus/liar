@@ -89,7 +89,9 @@ public class PracticeController {
         System.out.println("--------------------사용자가 나갔습니다----------------------------");
         System.out.println("나간 사용자의 쿠키값: "+ requestBody.get("userId"));
         System.out.println("나간 사용자의 쿠키값을 해독한 값: "+ decodeUrl(requestBody.get("userId")));
+        System.out.println("나간 사용자의 방 코드: "+ requestBody.get("roomCode"));
         String outUserName = decodeUrl(requestBody.get("userId"));
+        String outUserRoomCode = requestBody.get("roomCode");
         for (int i = 0; i < roomList.get(0).getUsers().size(); i++) {
             if(outUserName.equals(roomList.get(0).getUsers().get(i).getName())){
                 roomList.get(0).getUsers().remove(i);
@@ -127,23 +129,20 @@ public class PracticeController {
         String userId = decodeUrl(requestBody.get("userId"));
         String userContext = requestBody.get("userContext");
         Chat chat = new Chat(userId, userContext);
+        System.out.println("userId = " + userId);
+        System.out.println("userContext = " + userContext);
         ChatArray.chatList.add(chat);
     }
     
     @PostMapping("/getChatList")
     public List<Chat> sendChatList(){
-        if(ChatArray.chatList.isEmpty()){
-            Chat chat = new Chat("없습니다", "없습니다");
-            ChatArray.chatList.add(chat);
             return ChatArray.chatList;
-        }
-        return ChatArray.chatList;
     }
 
     @PostMapping("/getUserNumber")
     public int sendUserNumber(@RequestBody Map<String, String> requestBody){
         String roomCode = requestBody.get("roomCode");
-        System.out.println("입력받은 방 코드: "+ roomCode);
+        //System.out.println("입력받은 방 코드: "+ roomCode);
         int roomNumber =0;
         for (int i = 0; i < roomList.size(); i++) {
             if(roomList.get(i).getRoomId().equals(roomCode))
@@ -151,7 +150,8 @@ public class PracticeController {
                 roomNumber = i;
             }
         }
-        if(roomList.get(roomNumber).getUsers().isEmpty())
+        //System.out.println("방 인원: "+ roomList.get(roomNumber).getUsers().size());
+        if(roomList.get(roomNumber).getUsers().size() == 0)
         {
             return 0;
         }else{
@@ -159,8 +159,17 @@ public class PracticeController {
         }
     }
 
-    @GetMapping("/getSuperUserID")
-    public String sendSuperUserID(){
-        return roomList.get(0).getSuperUserName();
+    @PostMapping("/getSuperUserID")
+    public String sendSuperUserID(@RequestBody Map<String, String> req){
+        String roomCode = req.get("roomCode");
+        //System.out.println("입력받은 방 코드: "+ roomCode);
+        int roomNumber =0;
+        for (int i = 0; i < roomList.size(); i++) {
+            if(roomList.get(i).getRoomId().equals(roomCode))
+            {
+                roomNumber = i;
+            }
+        }
+        return roomList.get(roomNumber).getSuperUserName();
     }
 }
