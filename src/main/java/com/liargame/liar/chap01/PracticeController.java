@@ -24,7 +24,7 @@ import static org.springframework.boot.web.server.Cookie.*;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000") // React 애플리케이션의 주소로 변경
 public class PracticeController {
-
+    private static boolean started = false;
     @PostMapping("/create-room")
     public String makeRoom(){ // 방 만드는 메서드
         // 방 객체 만들고 방에 이름 넣기
@@ -172,4 +172,15 @@ public class PracticeController {
         }
         return roomList.get(roomNumber).getSuperUserName();
     }
+    @GetMapping("/gameState")
+    public boolean startGame(){
+        return started;
+    }
+
+    @GetMapping("/gameStart")
+    public void gameState(){
+        started = true;
+        System.out.println("게임 상태" + started);
+    }
+
 }
