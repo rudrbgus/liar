@@ -1,5 +1,6 @@
 package com.liargame.liar.chap01;
 
+import com.liargame.liar.chap01.service.GameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import static org.springframework.boot.web.server.Cookie.*;
 @CrossOrigin(origins = "http://localhost:3000") // React 애플리케이션의 주소로 변경
 public class PracticeController {
     private static boolean started = false;
+    private GameService gameService = new GameService();
     @PostMapping("/create-room")
     public String makeRoom(){ // 방 만드는 메서드
         // 방 객체 만들고 방에 이름 넣기
@@ -182,5 +184,37 @@ public class PracticeController {
         started = true;
         System.out.println("게임 상태" + started);
     }
+
+    //인게임 채팅
+    @PostMapping("/addGameChat")
+    public void addGameChat(@RequestBody Map<String, String> req){
+        String userId = decodeUrl(req.get("userId"));
+        String userContext = req.get("userContext");
+        GameChat chat = new GameChat(userId, userContext);
+        System.out.println("userId = " + userId);
+        System.out.println("userContext = " + userContext);
+        GameChatArray.gameChatList.add(chat);
+    }
+    @PostMapping("/getGameChatList")
+    public List<GameChat> sendGameChatList(){
+        return GameChatArray.gameChatList;
+    }
+    @PostMapping("/setLiar")
+    public void setLiar(@RequestBody Map<String, String> req){
+        System.out.println("-------------------------------------라이어 정하기------------------------------------");
+        System.out.println(req.get("roomCode"));
+        gameService.setLiar(req.get("roomCode"));
+        System.out.println("-------------------------------------라이어 정하기------------------------------------");
+    }
+
+    @PostMapping("/getLiar")
+    public Map<String, String> sendLiar(){
+        return gameService.getLiar();
+    }
+    @PostMapping("/getPresentUser")
+    public String sendFirstUser(@RequestBody Map<String, String> req){
+        return gameService.getUserName(req.get("roomCode"), req.get("num"));
+    }
+
 
 }
