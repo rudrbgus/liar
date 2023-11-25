@@ -213,8 +213,38 @@ public class PracticeController {
     }
     @PostMapping("/getPresentUser")
     public String sendFirstUser(@RequestBody Map<String, String> req){
-        return gameService.getUserName(req.get("roomCode"), req.get("num"));
+        return gameService.getUserName(req.get("roomCode"));
     }
 
+    @GetMapping("/increaseNum")
+    public void increaseNum(){
+        gameService.increaseNum();
+    }
+    @PostMapping("/getPrsentState")
+    public String sendPresentState(@RequestBody Map<String, Integer> num){
+        return gameService.getPresentState(num.get("num"));
+    }
+    @GetMapping("/getPrsentNumber")
+    public int sendPresentNumber(){
+        return gameService.getPresentNumber();
+    }
+
+    @PostMapping("/getGameState")
+    public int sendGameState(){
+        return gameService.getGameState();
+    }
+
+    @GetMapping("/addGameState")
+    public void addGameState(){
+        gameService.addGameState();
+    }
+    @PostMapping("/sendAnwser")
+    public void getAnwser(@RequestBody Map<String, String> req){
+        String s = req.get("userName");
+        String s1 = req.get("cookieName");
+        System.out.println("입력 받은 정답: "+ s);
+        System.out.println("사용자 이름: "+ s1);
+        gameService.getAnwser(s, s1);
+    }
 
 }
