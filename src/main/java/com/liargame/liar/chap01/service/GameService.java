@@ -89,14 +89,23 @@ public class GameService {
             case 3:
 
             case 4:
-
             case 5:
-                return getUserName(roomCode)+"님 제시어에 대해서 설명해주세요";
             case 6:
-                return "이제 라이어를 지목해주세요!!";
             case 7:
-                return "기다려주세요";
             case 8:
+            case 9:
+
+            case 10:
+                return getUserName(roomCode)+"님 제시어에 대해서 설명해주세요";
+            case 11:
+                return "이제 라이어를 지목해주세요!!";
+            case 12:
+                return "기다려주세요";
+            case 13:
+                return "기다려주세요";
+            case 14:
+                return "기다려주세요";
+            case 15:
                 anwser();
                 return "라이어가 이겼습니다!!";
 
@@ -108,7 +117,17 @@ public class GameService {
     }
 
     public void getAnwser(String anwserName, String userName ) {
-        anwser.put(userName, anwserName);
+        if(anwser.get(userName) == null){
+            anwser.put(userName, anwserName);
+            System.out.println(anwserName);
+            System.out.println(anwser.get(userName));
+            System.out.println(userName);
+            System.out.println("정답 리스트에 담았습니다");
+            System.out.println(anwser.toString());
+        }else{
+            System.out.println("이미 유저는 클릭했습니다");
+        }
+
     }
     public void anwser(){
         String anwser1 = anwser.get(RoomList.roomList.get(0).getUsers().get(0).getName());

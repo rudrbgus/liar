@@ -242,8 +242,6 @@ public class PracticeController {
     public void getAnwser(@RequestBody Map<String, String> req){
         String s = req.get("userName");
         String s1 = req.get("cookieName");
-        System.out.println("입력 받은 정답: "+ s);
-        System.out.println("사용자 이름: "+ s1);
         gameService.getAnwser(s, s1);
     }
 
