@@ -49,11 +49,16 @@ public class PracticeController {
     @PostMapping("/compare-room-code")
     public String  compareRoomCode(@RequestBody Map<String, String> requestData){
         // 방 코드 찾는 로직
-        String roomCode = requestData.get("roomCode");
-        int roomNumber =0;
+        String roomCode = requestData.get("inputRoomCode");
+        int roomNumber =-1;
         for (int i = 0; i < roomList.size(); i++) {
-            roomList.get(i).getRoomId().equals(roomCode);
-            roomNumber = i;
+            boolean equals = roomList.get(i).getRoomId().equals(roomCode);
+            if(equals){
+                roomNumber = i;
+            }
+        }
+        if(roomNumber == -1){
+            return "실패";
         }
 
         System.out.println("사용자가 방 코드 입력함: " + requestData.get("inputRoomCode"));
