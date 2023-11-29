@@ -21,17 +21,17 @@ public class LiarGameController {
     }
     @PostMapping("/get-user-list")
     public List<String> getUserListFromWaitRoom(@RequestBody Map<String, String> req){
-        System.out.println("입력 받은 방코드 : " + req.get("roomCode"));
         return liarGameService.getUserListFromWaitRoom(req.get("roomCode"));
     }
 
     @PostMapping("/getUserNumber")
     public int sendUserNumber(@RequestBody Map<String, String> req){
+        System.out.println(liarGameService.getUserNumber(req.get("roomCode")));
         return liarGameService.getUserNumber(req.get("roomCode"));
     }
 
     @PostMapping("/getSuperUserName")
     public String sendSuperUserName(@RequestBody Map<String, String> req){
-        return liarGameService.getSuperUserName(req.get("roomCode"));
+        return liarGameService.getSuperUserId(req.get("roomCode"));
     }
 }

@@ -4,6 +4,8 @@ import com.liargame.liar.chap02.assets.userRandomEngName;
 import com.liargame.liar.chap02.repository.User;
 import com.liargame.liar.chap02.repository.WaitRoom;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +42,18 @@ public class LiarGameService {
         return null;
     }
 
+    // 한국어 문자열 URL 인코딩
+    private String enCodeingURL(String originalName){
+        try{
+            String encode = URLEncoder.encode(originalName, "UTF-8");
+            return encode;
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
     // 방 만드는 메서드
     public List<String> makeRoom() {
         User user = new User(userRandomEngName.getRandomEngName(), null, 0, true);// 방장 유저 생성
@@ -66,17 +80,18 @@ public class LiarGameService {
     public int getUserNumber(String roomCode) {
         WaitRoom waitRoom = getWaitRoom(roomCode);
         if(waitRoom != null){
-            return waitRoom.getUserList().size();
+            if(waitRoom.getUserList() != null)
+                return waitRoom.getUserList().size();
         }
         return 0;
     }
 
 
-    public String getSuperUserName(String roomCode) {
+    public String getSuperUserId(String roomCode) {
         WaitRoom waitRoom = getWaitRoom(roomCode);
         for (User u: waitRoom.getUserList()){
             if(u.isSuperUser()){
-                return u.getUserName();
+                return enCodeingURL(u.getUserName());
             }
         }
         return null;
