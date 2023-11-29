@@ -27,7 +27,7 @@ import static org.springframework.boot.web.server.Cookie.*;
 public class PracticeController {
     private static boolean started = false;
     private GameService gameService = new GameService();
-    @PostMapping("/create-room")
+    @PostMapping("/create-room1")
     public String makeRoom(){ // 방 만드는 메서드
         // 방 객체 만들고 방에 이름 넣기
         Room room = new Room(); // 새로운 방 만들기
@@ -75,7 +75,7 @@ public class PracticeController {
         }
     }
 
-    @PostMapping("/get-user-list")
+    @PostMapping("/get-user-list1")
     public List<String> sendUserList(@RequestBody Map<String, String> requestData) {
         String roomCode = requestData.get("roomCode");
         int roomNumber =0;

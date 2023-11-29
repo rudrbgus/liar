@@ -9,5 +9,4 @@ public class LiarApplication {
     public static void main(String[] args) {
         SpringApplication.run(LiarApplication.class, args);
     }
-
 }
