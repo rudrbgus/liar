@@ -30,6 +30,16 @@ public class LiarGameService {
         return roomIdBuilder.toString();
     }
 
+    // 방 코드 보내면 방 리스트에서 찾아서 방 보내줌 없으면 null 반환
+    private WaitRoom getWaitRoom(String roomCode) {
+        for(WaitRoom w:waitRoomList){
+            if(w.getRoomCode().equals(roomCode)){
+                return w;
+            }
+        }
+        return null;
+    }
+
     // 방 만드는 메서드
     public List<String> makeRoom() {
         User user = new User(userRandomEngName.getRandomEngName(), null, 0, true);// 방장 유저 생성
@@ -46,10 +56,27 @@ public class LiarGameService {
     }
 
     public List<String> getUserListFromWaitRoom(String roomCode) {
+        WaitRoom waitRoom = getWaitRoom(roomCode);
+        if (waitRoom != null){
+            return waitRoom.getUserNameList();
+        }
+        return null;
+    }
 
-        for (WaitRoom w: waitRoomList) {
-            if(w.getRoomCode().equals(roomCode)){
-                return w.getUserNameList();
+    public int getUserNumber(String roomCode) {
+        WaitRoom waitRoom = getWaitRoom(roomCode);
+        if(waitRoom != null){
+            return waitRoom.getUserList().size();
+        }
+        return 0;
+    }
+
+
+    public String getSuperUserName(String roomCode) {
+        WaitRoom waitRoom = getWaitRoom(roomCode);
+        for (User u: waitRoom.getUserList()){
+            if(u.isSuperUser()){
+                return u.getUserName();
             }
         }
         return null;

@@ -24,4 +24,14 @@ public class LiarGameController {
         System.out.println("입력 받은 방코드 : " + req.get("roomCode"));
         return liarGameService.getUserListFromWaitRoom(req.get("roomCode"));
     }
+
+    @PostMapping("/getUserNumber")
+    public int sendUserNumber(@RequestBody Map<String, String> req){
+        return liarGameService.getUserNumber(req.get("roomCode"));
+    }
+
+    @PostMapping("/getSuperUserName")
+    public String sendSuperUserName(@RequestBody Map<String, String> req){
+        return liarGameService.getSuperUserName(req.get("roomCode"));
+    }
 }
