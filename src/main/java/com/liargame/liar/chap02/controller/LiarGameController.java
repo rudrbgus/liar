@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -18,8 +19,9 @@ public class LiarGameController {
     public List<String> makeRoom(){
         return liarGameService.makeRoom();
     }
-    @PostMapping("get-user-list")
-    public void getUserListFromWaitRoom(@RequestBody String roomCode){
-        liarGameService.getUserListFromWaitRoom(roomCode);
+    @PostMapping("/get-user-list")
+    public List<String> getUserListFromWaitRoom(@RequestBody Map<String, String> req){
+        System.out.println("입력 받은 방코드 : " + req.get("roomCode"));
+        return liarGameService.getUserListFromWaitRoom(req.get("roomCode"));
     }
 }

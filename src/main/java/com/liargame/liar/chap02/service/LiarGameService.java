@@ -34,6 +34,7 @@ public class LiarGameService {
     public List<String> makeRoom() {
         User user = new User(userRandomEngName.getRandomEngName(), null, 0, true);// 방장 유저 생성
         WaitRoom waitRoom = new WaitRoom(generateRandomRoomId()); // 새로운 방 생성 -> 랜덤한 코드 삽입
+        waitRoom.addUser(user);
         waitRoomList.add(waitRoom); // 새로운 대기방을 대기방 리스트에 삽입
         System.out.println("새로운 대기방이 생성 되었습니다");
         System.out.println("방 코드는: "+ waitRoom.getRoomCode());
@@ -44,10 +45,11 @@ public class LiarGameService {
         return userInfo;
     }
 
-    public List<User> getUserListFromWaitRoom(String roomCode) {
+    public List<String> getUserListFromWaitRoom(String roomCode) {
+
         for (WaitRoom w: waitRoomList) {
-            if(w.getRoomCode() == roomCode){
-                return w.getUserList();
+            if(w.getRoomCode().equals(roomCode)){
+                return w.getUserNameList();
             }
         }
         return null;

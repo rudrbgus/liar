@@ -91,7 +91,7 @@ public class PracticeController {
         }
         return userNameList;
     }
-    @PostMapping("/user-leave")
+    @PostMapping("/user-leave1")
     public void userLeave(@RequestBody Map<String, String> requestBody){
         System.out.println("--------------------사용자가 나갔습니다----------------------------");
         System.out.println("나간 사용자의 쿠키값: "+ requestBody.get("userId"));
@@ -120,7 +120,7 @@ public class PracticeController {
         }
     }
 
-    @PostMapping("/getRoomCode")
+    @PostMapping("/getRoomCode1")
     public String sendRoomCode(@RequestBody Map<String, String> requestBody){
         String userName = requestBody.get("userName");
         int roomNumber =0;
@@ -131,7 +131,7 @@ public class PracticeController {
         return roomList.get(roomNumber).getRoomId();
     }
 
-    @PostMapping("/addChat")
+    @PostMapping("/addChat1")
     public void addChat(@RequestBody Map<String, String> requestBody){
         String userId = decodeUrl(requestBody.get("userId"));
         String userContext = requestBody.get("userContext");
@@ -141,12 +141,12 @@ public class PracticeController {
         ChatArray.chatList.add(chat);
     }
     
-    @PostMapping("/getChatList")
+    @PostMapping("/getChatList1")
     public List<Chat> sendChatList(){
             return ChatArray.chatList;
     }
 
-    @PostMapping("/getUserNumber")
+    @PostMapping("/getUserNumber1")
     public int sendUserNumber(@RequestBody Map<String, String> requestBody){
         String roomCode = requestBody.get("roomCode");
         //System.out.println("입력받은 방 코드: "+ roomCode);
@@ -166,7 +166,7 @@ public class PracticeController {
         }
     }
 
-    @PostMapping("/getSuperUserID")
+    @PostMapping("/getSuperUserID1")
     public String sendSuperUserID(@RequestBody Map<String, String> req){
         String roomCode = req.get("roomCode");
         //System.out.println("입력받은 방 코드: "+ roomCode);
@@ -179,19 +179,19 @@ public class PracticeController {
         }
         return roomList.get(roomNumber).getSuperUserName();
     }
-    @GetMapping("/gameState")
+    @GetMapping("/gameState1")
     public boolean startGame(){
         return started;
     }
 
-    @GetMapping("/gameStart")
+    @GetMapping("/gameStart1")
     public void gameState(){
         started = true;
         System.out.println("게임 상태" + started);
     }
 
     //인게임 채팅
-    @PostMapping("/addGameChat")
+    @PostMapping("/addGameChat1")
     public void addGameChat(@RequestBody Map<String, String> req){
         String userId = decodeUrl(req.get("userId"));
         String userContext = req.get("userContext");
@@ -200,11 +200,11 @@ public class PracticeController {
         System.out.println("userContext = " + userContext);
         GameChatArray.gameChatList.add(chat);
     }
-    @PostMapping("/getGameChatList")
+    @PostMapping("/getGameChatList1")
     public List<GameChat> sendGameChatList(){
         return GameChatArray.gameChatList;
     }
-    @PostMapping("/setLiar")
+    @PostMapping("/setLiar1")
     public void setLiar(@RequestBody Map<String, String> req){
         System.out.println("-------------------------------------라이어 정하기------------------------------------");
         System.out.println(req.get("roomCode"));
@@ -212,38 +212,38 @@ public class PracticeController {
         System.out.println("-------------------------------------라이어 정하기------------------------------------");
     }
 
-    @PostMapping("/getLiar")
+    @PostMapping("/getLiar1")
     public Map<String, String> sendLiar(){
         return gameService.getLiar();
     }
-    @PostMapping("/getPresentUser")
+    @PostMapping("/getPresentUser1")
     public String sendFirstUser(@RequestBody Map<String, String> req){
         return gameService.getUserName(req.get("roomCode"));
     }
 
-    @GetMapping("/increaseNum")
+    @GetMapping("/increaseNum1")
     public void increaseNum(){
         gameService.increaseNum();
     }
-    @PostMapping("/getPrsentState")
+    @PostMapping("/getPrsentState1")
     public String sendPresentState(@RequestBody Map<String, Integer> num){
         return gameService.getPresentState(num.get("num"));
     }
-    @GetMapping("/getPrsentNumber")
+    @GetMapping("/getPrsentNumber1")
     public int sendPresentNumber(){
         return gameService.getPresentNumber();
     }
 
-    @PostMapping("/getGameState")
+    @PostMapping("/getGameState1")
     public int sendGameState(){
         return gameService.getGameState();
     }
 
-    @GetMapping("/addGameState")
+    @GetMapping("/addGameState1")
     public void addGameState(){
         gameService.addGameState();
     }
-    @PostMapping("/sendAnwser")
+    @PostMapping("/sendAnwser1")
     public void getAnwser(@RequestBody Map<String, String> req){
         String s = req.get("userName");
         String s1 = req.get("cookieName");
