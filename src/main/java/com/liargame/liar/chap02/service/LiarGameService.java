@@ -1,8 +1,6 @@
 package com.liargame.liar.chap02.service;
 
 import com.liargame.liar.chap02.assets.userRandomEngName;
-import com.liargame.liar.chap02.repository.User;
-import com.liargame.liar.chap02.repository.WaitRoom;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

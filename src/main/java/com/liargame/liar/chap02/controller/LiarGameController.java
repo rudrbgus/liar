@@ -1,10 +1,6 @@
 package com.liargame.liar.chap02.controller;
 
-import com.liargame.liar.chap02.assets.userRandomEngName;
-import com.liargame.liar.chap02.repository.User;
-import com.liargame.liar.chap02.repository.WaitRoom;
 import com.liargame.liar.chap02.service.LiarGameService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
