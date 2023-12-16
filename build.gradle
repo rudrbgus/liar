@@ -26,7 +26,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+    // STOMP
+    implementation group: 'org.webjars.npm', name: 'stomp', version: '0.1.1'
+    // WEBSOCKET
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.0'}
 
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
