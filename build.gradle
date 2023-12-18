@@ -26,10 +26,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // 웹 소켓
+    // STOMP
+    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.4'
+    // WEBSOCKET
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-}
-
+    }
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
