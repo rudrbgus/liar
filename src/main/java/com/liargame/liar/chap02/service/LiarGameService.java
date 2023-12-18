@@ -17,7 +17,7 @@ import java.util.Random;
 @Service
 public class LiarGameService {
     // 대기방 리스트
-    private static List<Room> roomList;
+    public static List<Room> roomList;
 
     static {
         roomList = new ArrayList<>();
@@ -107,4 +107,7 @@ public class LiarGameService {
         }
         return null;
     }
+
+
+
 }
