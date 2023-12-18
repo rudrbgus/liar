@@ -1,7 +1,5 @@
 package com.liargame.liar.chap02.assets;
 
-import com.liargame.liar.chap01.userRandomName;
-
 import java.util.Random;
 
 public enum userRandomEngName {
@@ -10,8 +8,9 @@ public enum userRandomEngName {
 
     private static final Random RANDOM = new Random();
 
+
     public static String getRandomEngName() {
-        userRandomName[] values = userRandomName.values();
+        userRandomEngName[] values = userRandomEngName.values();
         return values[RANDOM.nextInt(values.length)].toString();
     }
 }

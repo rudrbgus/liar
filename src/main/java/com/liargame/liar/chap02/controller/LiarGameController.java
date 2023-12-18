@@ -1,9 +1,11 @@
 package com.liargame.liar.chap02.controller;
 
 import com.liargame.liar.chap02.repository.Player;
+import com.liargame.liar.chap02.repository.Room;
 import com.liargame.liar.chap02.service.LiarGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +20,13 @@ public class LiarGameController {
 
     private final LiarGameService liarGameService;
     // 방 만들기
-    @GetMapping("/create-room")
-    public void makeRoom(){
-        liarGameService.makeRoom();
+    @PostMapping("/create-room")
+    public ResponseEntity<?> makeRoom(){
+        return ResponseEntity.ok().body(liarGameService.makeRoom());
     }
     @PostMapping("/get-user-list")
-    public List<Player> getUserListFromWaitRoom(@RequestBody Map<String, String> req){
-        return liarGameService.getUserListFromWaitRoom(req.get("roomCode"));
+    public ResponseEntity<?> getUserListFromWaitRoom(@RequestBody Map<String, String> req){
+        return ResponseEntity.ok().body(liarGameService.getUserListFromRoom(req.get("roomCode")));
     }
 
     @PostMapping("/getUserNumber")

@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Room {
     private String roomId;
-    private List<Player> playerList;
+    private List<Player> playerList = new ArrayList<>();
 
 
 

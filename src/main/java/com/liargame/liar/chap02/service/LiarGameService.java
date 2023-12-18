@@ -60,20 +60,27 @@ public class LiarGameService {
 
 
     // 방 만드는 메서드
-    public void makeRoom() {
+    public String makeRoom() {
         Player user = new Player(userRandomEngName.getRandomEngName(), null, true);// 방장 유저 생성
-        Room room = new Room(generateRandomRoomId()); // 새로운 방 생성 -> 랜덤한 코드 삽입
+        String roomId = generateRandomRoomId();
+        Room room = new Room(roomId); // 새로운 방 생성 -> 랜덤한 코드 삽입
         room.addUser(user);
         roomList.add(room); // 새로운 대기방을 대기방 리스트에 삽입
         System.out.println("새로운 대기방이 생성 되었습니다");
         System.out.println("방 코드는: "+ room.getRoomId());
+        return roomId;
     }
 
-    public void findRoom(){
-
+    public Room findRoom(String roomId){
+        for (Room room : roomList) {
+            if (room.getRoomId().equals(roomId)) {
+                return room;
+            }
+        }
+        return null;
     }
 
-    public List<Player> getUserListFromWaitRoom(String roomCode) {
+    public List<Player> getUserListFromRoom(String roomCode) {
         Room waitRoom = getWaitRoom(roomCode);
         if (waitRoom != null){
             return waitRoom.getPlayerList();
