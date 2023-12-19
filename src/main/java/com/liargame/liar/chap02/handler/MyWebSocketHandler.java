@@ -30,7 +30,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 클라이언트 연결 성공 시 동작
         log.info("연결 성공");
-        session.sendMessage(new TextMessage("서버로부터의 환영 메시지!"));
     }
 
     @Override
@@ -44,8 +43,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 ws.sendMessage(new TextMessage("1"));
             }
         }
-
-
     }
 
     @Override
