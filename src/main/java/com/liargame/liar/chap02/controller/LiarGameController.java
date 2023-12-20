@@ -19,6 +19,14 @@ import java.util.Map;
 public class LiarGameController {
 
     private final LiarGameService liarGameService;
+
+    // 방 찾기
+    @PostMapping("/find-room")
+    public ResponseEntity<?> findRoom(@RequestBody Map<String, String> req){
+        System.out.println(req.get("inputRoomCode"));
+        return ResponseEntity.ok().body(liarGameService.findRoom2(req.get("inputRoomCode")).getPlayerList());
+    }
+
     // 방 만들기
     @PostMapping("/room")
     public ResponseEntity<?> makeRoom(){
@@ -28,6 +36,7 @@ public class LiarGameController {
     public ResponseEntity<?> getUserListFromWaitRoom(@RequestBody Map<String, String> req){
         return ResponseEntity.ok().body(liarGameService.getUserListFromRoom(req.get("roomCode")));
     }
+
 
     @PostMapping("/getUserNumber")
     public int sendUserNumber(@RequestBody Map<String, String> req){
@@ -39,4 +48,5 @@ public class LiarGameController {
     public String sendSuperUserName(@RequestBody Map<String, String> req){
         return liarGameService.getSuperUserId(req.get("roomCode"));
     }
+
 }

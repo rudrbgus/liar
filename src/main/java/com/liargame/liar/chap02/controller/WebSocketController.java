@@ -26,9 +26,8 @@ public class WebSocketController {
 
     @MessageMapping("/giveMeList")
     @SendTo("/topic/list")
-
     public List<Player> responseList(@Payload GetPlayListDTO dto){
-        System.out.println(dto.getRoomId());
+        System.out.println("서버로 받은 방 코드: "+dto.getRoomId());
         return liarGameService.findRoom(dto.getRoomId()).getPlayerList();
     }
 

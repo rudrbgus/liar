@@ -80,6 +80,16 @@ public class LiarGameService {
         return null;
     }
 
+    public Room findRoom2(String roomId){
+        for (Room room : roomList) {
+            if (room.getRoomId().equals(roomId)) {
+                room.addUser(new Player(generateRandomRoomId(), null, false));
+                return room;
+            }
+        }
+        return null;
+    }
+
     public List<Player> getUserListFromRoom(String roomCode) {
         Room waitRoom = getWaitRoom(roomCode);
         if (waitRoom != null){

@@ -14,4 +14,6 @@ public class Player {
         this.role = role;
         this.isSuperPlayer = isSuper;
     }
+
+
 }
