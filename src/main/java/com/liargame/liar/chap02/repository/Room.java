@@ -14,7 +14,7 @@ import java.util.List;
 public class Room {
     private String roomId;
     private List<Player> playerList;
-    private List<Chat> chatList;
+    private List<Chat> chatList = new ArrayList<>();
 
     public Room(String s) {
         this.roomId = s;
@@ -27,4 +27,10 @@ public class Room {
         playerList.removeIf(p -> p.getPlayerId().equals(userName));
         System.out.println("리스트에서 삭제가 완료 되었습니다 : " + playerList.toString());
     }
+
+    public void addChat(String userName, String content){
+        Chat chat = new Chat(userName, content);
+        chatList.add(chat);
+    }
+
 }

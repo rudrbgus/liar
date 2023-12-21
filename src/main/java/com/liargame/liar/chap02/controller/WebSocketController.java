@@ -1,7 +1,10 @@
 package com.liargame.liar.chap02.controller;
 
+import com.liargame.liar.chap02.dto.request.AddChatRequestDTO;
 import com.liargame.liar.chap02.dto.request.GetOutPlayListDTO;
+import com.liargame.liar.chap02.repository.Chat;
 import com.liargame.liar.chap02.repository.Player;
+import com.liargame.liar.chap02.repository.Room;
 import com.liargame.liar.chap02.service.LiarGameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -36,6 +39,20 @@ public class WebSocketController {
         return liarGameService.findRoom(dto.getRoomId()).getPlayerList();
     }
 
+    @MessageMapping("/addChat")
+    @SendTo("/topic/chat")
+    public List<Chat> addChat(@Payload AddChatRequestDTO dto){
+        Room room = liarGameService.findRoom(dto.getRoomId());
+        room.addChat(dto.getUserName(), dto.getUserContext());
+        return room.getChatList();
+    }
+
+    @MessageMapping("/giveMeChat")
+    @SendTo("/topic/chat")
+    public List<Chat> sendChatList(@Payload GetOutPlayListDTO dto){
+
+        return liarGameService.findRoom(dto.getRoomId()).getChatList();
+    }
 
 
 }
