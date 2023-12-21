@@ -1,6 +1,7 @@
 package com.liargame.liar.chap02.service;
 
 import com.liargame.liar.chap02.assets.userRandomEngName;
+import com.liargame.liar.chap02.dto.request.GetOutPlayListDTO;
 import com.liargame.liar.chap02.dto.response.UserInfoResponseDTO;
 import com.liargame.liar.chap02.repository.Player;
 import com.liargame.liar.chap02.repository.Room;
@@ -81,11 +82,12 @@ public class LiarGameService {
         return null;
     }
 
-    public Room findRoom2(String roomId){
+    public UserInfoResponseDTO findRoomAndAddPlayer(String roomId){
         for (Room room : roomList) {
             if (room.getRoomId().equals(roomId)) {
-                room.addUser(new Player(generateRandomRoomId(), null, false));
-                return room;
+                Player p = new Player(userRandomEngName.getRandomEngName(), null, false);
+                room.addUser(p);
+                return new UserInfoResponseDTO(p.getPlayerId(), room.getRoomId());
             }
         }
         return null;
@@ -119,6 +121,9 @@ public class LiarGameService {
         return null;
     }
 
-
-
+    // 사용자가 방에서 나갔을 때 메서드
+    public void getOutTheRoom(GetOutPlayListDTO dto) {
+        Room room = findRoom(dto.getRoomId());
+        room.delete(dto.getUserName());
+    }
 }

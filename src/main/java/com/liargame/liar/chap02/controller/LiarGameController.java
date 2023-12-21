@@ -21,10 +21,10 @@ public class LiarGameController {
     private final LiarGameService liarGameService;
 
     // 방 찾기
-    @PostMapping("/find-room")
+    @PostMapping("/room")
     public ResponseEntity<?> findRoom(@RequestBody Map<String, String> req){
         System.out.println(req.get("inputRoomCode"));
-        return ResponseEntity.ok().body(liarGameService.findRoom2(req.get("inputRoomCode")).getPlayerList());
+        return ResponseEntity.ok().body(liarGameService.findRoomAndAddPlayer(req.get("inputRoomCode")));
     }
 
     // 방 만들기
