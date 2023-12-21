@@ -70,7 +70,7 @@ public class LiarGameService {
         roomList.add(room); // 새로운 대기방을 대기방 리스트에 삽입
         System.out.println("새로운 대기방이 생성 되었습니다");
         System.out.println("방 코드는: "+ roomId);
-        return new UserInfoResponseDTO(user.getPlayerId(), roomId);
+        return new UserInfoResponseDTO(user.getPlayerId(), roomId, user.isSuperPlayer());
     }
 
     public Room findRoom(String roomId){
@@ -87,7 +87,7 @@ public class LiarGameService {
             if (room.getRoomId().equals(roomId)) {
                 Player p = new Player(userRandomEngName.getRandomEngName(), null, false);
                 room.addUser(p);
-                return new UserInfoResponseDTO(p.getPlayerId(), room.getRoomId());
+                return new UserInfoResponseDTO(p.getPlayerId(), room.getRoomId(), p.isSuperPlayer());
             }
         }
         return null;

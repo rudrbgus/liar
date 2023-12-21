@@ -9,5 +9,5 @@ import lombok.*;
 public class UserInfoResponseDTO {
     String userName;
     String roomId;
-
+    boolean isSuperUser;
 }
