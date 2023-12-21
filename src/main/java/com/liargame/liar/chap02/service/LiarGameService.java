@@ -1,6 +1,7 @@
 package com.liargame.liar.chap02.service;
 
 import com.liargame.liar.chap02.assets.userRandomEngName;
+import com.liargame.liar.chap02.dto.response.UserInfoResponseDTO;
 import com.liargame.liar.chap02.repository.Player;
 import com.liargame.liar.chap02.repository.Room;
 import lombok.Setter;
@@ -60,15 +61,15 @@ public class LiarGameService {
 
 
     // 방 만드는 메서드
-    public String makeRoom() {
+    public UserInfoResponseDTO makeRoom() {
         Player user = new Player(userRandomEngName.getRandomEngName(), null, true);// 방장 유저 생성
         String roomId = generateRandomRoomId();
         Room room = new Room(roomId); // 새로운 방 생성 -> 랜덤한 코드 삽입
         room.addUser(user);
         roomList.add(room); // 새로운 대기방을 대기방 리스트에 삽입
         System.out.println("새로운 대기방이 생성 되었습니다");
-        System.out.println("방 코드는: "+ room.getRoomId());
-        return roomId;
+        System.out.println("방 코드는: "+ roomId);
+        return new UserInfoResponseDTO(user.getPlayerId(), roomId);
     }
 
     public Room findRoom(String roomId){

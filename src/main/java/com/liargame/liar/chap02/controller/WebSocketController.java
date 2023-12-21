@@ -31,4 +31,9 @@ public class WebSocketController {
         return liarGameService.findRoom(dto.getRoomId()).getPlayerList();
     }
 
+    @MessageMapping("/outList")
+    public void outList(@Payload GetPlayListDTO dto){
+        //liarGameService.findRoom(dto.getRoomId()).getPlayerList().remove();
+    }
+
 }

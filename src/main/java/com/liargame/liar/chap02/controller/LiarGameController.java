@@ -28,7 +28,7 @@ public class LiarGameController {
     }
 
     // 방 만들기
-    @PostMapping("/room")
+    @GetMapping("/room")
     public ResponseEntity<?> makeRoom(){
         return ResponseEntity.ok().body(liarGameService.makeRoom());
     }
