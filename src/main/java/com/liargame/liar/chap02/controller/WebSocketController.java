@@ -1,6 +1,7 @@
 package com.liargame.liar.chap02.controller;
 
 import com.liargame.liar.chap02.dto.request.AddChatRequestDTO;
+import com.liargame.liar.chap02.dto.request.GameStateRequestDTO;
 import com.liargame.liar.chap02.dto.request.GetOutPlayListDTO;
 import com.liargame.liar.chap02.repository.Chat;
 import com.liargame.liar.chap02.repository.Player;
@@ -52,6 +53,13 @@ public class WebSocketController {
     public List<Chat> sendChatList(@Payload GetOutPlayListDTO dto){
 
         return liarGameService.findRoom(dto.getRoomId()).getChatList();
+    }
+
+    @MessageMapping("/gameStart")
+    @SendTo("/topic/game")
+    public String sendGameState(@Payload GameStateRequestDTO dto){
+        System.out.println(dto.getText());
+        return dto.getText();
     }
 
 
