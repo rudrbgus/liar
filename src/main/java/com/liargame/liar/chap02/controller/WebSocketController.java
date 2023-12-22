@@ -3,6 +3,7 @@ package com.liargame.liar.chap02.controller;
 import com.liargame.liar.chap02.dto.request.AddChatRequestDTO;
 import com.liargame.liar.chap02.dto.request.GameStateRequestDTO;
 import com.liargame.liar.chap02.dto.request.GetOutPlayListDTO;
+import com.liargame.liar.chap02.dto.request.RoomIdRequestDTO;
 import com.liargame.liar.chap02.repository.Chat;
 import com.liargame.liar.chap02.repository.Player;
 import com.liargame.liar.chap02.repository.Room;
@@ -13,6 +14,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -61,6 +63,16 @@ public class WebSocketController {
         System.out.println(dto.getText());
         return dto.getText();
     }
+
+    @MessageMapping("/gameStarted")
+    @SendTo("/topic/chat")
+    public List<Chat> clearChat(@Payload RoomIdRequestDTO dto){
+        // 채팅 리스트 비움
+        Room room = liarGameService.findRoom(dto.getRoomId());
+        room.setChatList(new ArrayList<>());
+        return room.getChatList();
+    }
+
 
 
 }
